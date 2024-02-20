@@ -24,11 +24,9 @@ export class EventLoader {
                     // Load the event
                     try {
                         // Require EventHandler file
-                        const EventHandler = require(path.join(
-                            this.path,
-                            folder,
-                            file
-                        )).default;
+                        const EventHandler = require(
+                            path.join(this.path, folder, file)
+                        ).default;
 
                         // Validate that it's a EventHandler class
                         if (

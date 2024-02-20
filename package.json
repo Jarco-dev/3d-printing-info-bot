@@ -1,7 +1,7 @@
 {
-    "name": "bot-layout-ts",
+    "name": "3d-print-info",
     "version": "0.0.0",
-    "description": "The typescript discord bot layout",
+    "description": "A bot that helps you store information about 3d printing",
     "main": "dist/index.js",
     "engines": {
         "node": ">=16.9.0"

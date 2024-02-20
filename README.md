@@ -1,21 +1,6 @@
-# bot-layout-ts
+# 3D-printing-info
 
-A basic layout for a discord bot using typescript
-
-# To do before starting development
-
-* Enter a name, version and description in `package.json`
-* In `.env.example` fill in the config values
-* Remove `.example` from `.env.example`
-* Remove unneeded intents in `src/config.ts`
-* install npm packages using `npm i`
-* Update the `README.md` to fit the project
-
---------------------------------------------------------------
-
-# bot-layout-ts
-
-The bot-layout-ts discord bot
+The 3D printing info bot
 
 # Compiling
 
