@@ -1,0 +1,33 @@
+{
+    "extends": "./node_modules/gts/tsconfig-google.json",
+    "compilerOptions": {
+        "allowJs": false,
+        "esModuleInterop": true,
+        "target": "ES2021",
+        "rootDir": "./src",
+        "outDir": "dist",
+        "baseUrl": ".",
+        "skipLibCheck": true,
+        "sourceMap": false,
+        "declaration": false,
+        "paths": {
+            "@/autoComplete/*": ["src/interactions/autocomplete/*"],
+            "@/button/*": ["src/interactions/buttonComponents/*"],
+            "@/channelMenu/*": ["src/interactions/channelSelectMenuComponents/*"],
+            "@/chatCommand/*": ["src/interactions/chatInputCommands/*"],
+            "@/mentionableMenu/*": ["src/interactions/mentionableSelectMenuComponents/*"],
+            "@/msgContextMenu/*": ["src/interactions/messageContextMenuCommands/*"],
+            "@/modal/*": ["src/interactions/modals/*"],
+            "@/roleMenu/*": ["src/interactions/roleSelectMenuComponents/*"],
+            "@/stringMenu/*": ["src/interactions/stringSelectMenuComponents/*"],
+            "@/userContextMenu/*": ["src/interactions/userContextMenuCommands/*"],
+            "@/userMenu/*": ["src/interactions/userSelectMenuComponents/*"],
+            "@/classes": ["src/classes"],
+            "@/structures": ["src/classes/structures"],
+            "@/types": ["src/types"]
+        }
+    },
+    "include": [
+        "src/**/*"
+    ]
+}

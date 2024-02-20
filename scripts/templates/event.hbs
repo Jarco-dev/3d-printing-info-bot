@@ -1,0 +1,15 @@
+import { HandlerResult } from "@/types";
+import { EventHandler } from "@/structures";
+
+export default class {{name}}EventHandler extends EventHandler<"{{event}}"> {
+    constructor() {
+        super({
+            name: "{{event}}"
+        });
+    }
+
+    public run(): HandlerResult | Promise<HandlerResult> {
+        // Success
+        return { result: "SUCCESS" };
+    }
+}

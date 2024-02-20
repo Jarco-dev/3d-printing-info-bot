@@ -1,0 +1,16 @@
+import { TimerTaskResult } from "@/types";
+import { Task } from "@/structures";
+
+export default class {{className}}Task extends Task {
+    constructor() {
+        super({
+            name: "{{name}}",
+            cronExpression: "{{cronExpression}}"
+        });
+    }
+
+    run(): TimerTaskResult | Promise<TimerTaskResult> {
+        // Success
+        return { result: "SUCCESS" };
+    }
+}
