@@ -318,7 +318,7 @@ export class InteractionLoader {
             i: Interaction,
             group: GroupKeys
         ): HandlerTypes | undefined => {
-            const name = i.isCommand()
+            const name = i.isCommand() || i.isAutocomplete()
                 ? i.commandName
                 : i.isMessageComponent() || i.isModalSubmit()
                 ? i.customId
