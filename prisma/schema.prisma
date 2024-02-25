@@ -7,3 +7,41 @@ datasource db {
   url               = env("DATABASE_URL")
   shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
 }
+
+model Filaments {
+  id                      Int                    @id @default(autoincrement())
+  brand                   String
+  sku                     String?
+  type                    String
+  name                    String
+  color                   String
+  FromFilamentPurgeVolume FilamentPurgeVolumes[] @relation("fromFilament")
+  toFilamentPurgeVolumes  FilamentPurgeVolumes[] @relation("toFilament")
+}
+
+model Nozzles {
+  id                   Int                    @id @default(autoincrement())
+  brand                String
+  material             String
+  diameter             Decimal
+  name                 String
+  FilamentPurgeVolumes FilamentPurgeVolumes[]
+}
+
+model FilamentPurgeVolumes {
+  id             Int       @id @default(autoincrement())
+  fromFilamentId Int
+  FromFilament   Filaments @relation("fromFilament", fields: [fromFilamentId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  toFilamentId   Int
+  ToFilament     Filaments @relation("toFilament", fields: [toFilamentId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  nozzleId       Int
+  Nozzle         Nozzles   @relation(fields: [nozzleId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  volume         Int
+  name           String
+}
+
+enum NozzleMaterials {
+  BRASS
+  STAINLESS_STEEL
+  HARDENED_STEEL
+}

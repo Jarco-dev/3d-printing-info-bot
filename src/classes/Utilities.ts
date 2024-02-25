@@ -60,7 +60,7 @@ export class Utilities {
     }
 
     public addNewLines(lines: string[]): string {
-        return lines.join("\n");
+        return lines.filter(s => s).join("\n");
     }
 
     public checkPermissions(

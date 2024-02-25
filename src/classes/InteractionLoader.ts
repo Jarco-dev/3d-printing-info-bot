@@ -318,11 +318,12 @@ export class InteractionLoader {
             i: Interaction,
             group: GroupKeys
         ): HandlerTypes | undefined => {
-            const name = i.isCommand() || i.isAutocomplete()
-                ? i.commandName
-                : i.isMessageComponent() || i.isModalSubmit()
-                ? i.customId
-                : undefined;
+            const name =
+                i.isCommand() || i.isAutocomplete()
+                    ? i.commandName
+                    : i.isMessageComponent() || i.isModalSubmit()
+                    ? i.customId
+                    : undefined;
             if (!name) {
                 this.client.logger.warn(
                     "Interaction handler was unable to obtain the name from a interaction"
