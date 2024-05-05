@@ -500,7 +500,7 @@ export default class PurgeVolumeChatInputCommand extends ChatInputCommand {
         );
 
         // Check for duplicates
-        const ids = [filament1Id, filament2Id, filament3Id, filament4Id];
+        const ids = [filament1Id, filament2Id, filament3Id, filament4Id].filter(i => !isNaN(i));
         const duplicates = ids.filter(
             (item, index) => ids.indexOf(item) !== index
         );
@@ -624,7 +624,7 @@ export default class PurgeVolumeChatInputCommand extends ChatInputCommand {
             table[positions[fm.id]][0] = fm.color;
         }
 
-        for (let i = 0; i < table.length; i++) {
+        for (let i = table.length - 1; i >= 3; i--) {
             if (table[0][i]) continue;
 
             table.splice(i, 1);
