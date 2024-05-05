@@ -1,0 +1,41 @@
+# Comments are provided throughout this file to help you get started.
+# If you need more help, visit the Docker compose reference guide at
+# https://docs.docker.com/go/compose-spec-reference/
+
+# Here the instructions define your application as a service called "server".
+# This service is built from the Dockerfile in the current directory.
+# You can add other services your application may depend on here, such as a
+# database or a cache. For examples, see the Awesome Compose repository:
+# https://github.com/docker/awesome-compose
+services:
+    bot:
+        build: .
+        environment:
+            - DATABASE_URL=mysql://${MYSQL_USER}:${MYSQL_PASSWORD}@database:3306/${MYSQL_DATABASE}
+            - LOG_LEVEL=${LOG_LEVEL}
+            - DISCORD_BOT_TOKEN=${DISCORD_BOT_TOKEN}
+        volumes:
+            - "bot_data:/usr/src/app/storage"
+        depends_on:
+            - mariadb
+        networks:
+            - backend
+
+    mariadb:
+        image: mariadb
+        environment:
+          MYSQL_RANDOM_ROOT_PASSWORD: yes
+          MYSQL_USER: ${MYSQL_USER}
+          MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+          MYSQL_DATABASE: ${MYSQL_DATABASE}
+        volumes:
+          - "mariadb_data:/var/lib/mysql"
+        networks:
+            - backend
+
+volumes:
+    bot_data:
+    mariadb_data:
+
+networks:
+    backend:
