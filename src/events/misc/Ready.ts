@@ -18,6 +18,9 @@ export default class ReadyEventHandler extends EventHandler<"ready"> {
         // Start tasks
         this.client.taskLoader.startAll();
 
+        // Start metrics
+        this.client.metrics.start();
+
         // Success
         return { result: "SUCCESS" };
     }
