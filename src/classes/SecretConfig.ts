@@ -9,6 +9,7 @@ export class SecretConfig {
         | string
         | undefined;
     public LOG_LEVEL = process.env.LOG_LEVEL as LogLevel;
+    public METRICS_PORT = parseInt(process.env.METRICS_PORT ?? "NaN");
 
     constructor() {}
 
@@ -31,6 +32,12 @@ export class SecretConfig {
             )
         ) {
             errors.push("LOG_LEVEL is a invalid value");
+        }
+
+        if (!this.METRICS_PORT) {
+            errors.push("METRICS_PORT is required but not given");
+        } else if (isNaN(this.METRICS_PORT)) {
+            errors.push("METRICS_PORT is a invalid value");
         }
 
         if (errors.length > 0) {
