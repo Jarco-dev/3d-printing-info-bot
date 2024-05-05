@@ -11,7 +11,7 @@ services:
     bot:
         build: .
         environment:
-            - DATABASE_URL=mysql://${MYSQL_USER}:${MYSQL_PASSWORD}@database:3306/${MYSQL_DATABASE}
+            - DATABASE_URL=mysql://${MYSQL_USER}:${MYSQL_PASSWORD}@mariadb:3306/${MYSQL_DATABASE}
             - LOG_LEVEL=${LOG_LEVEL}
             - DISCORD_BOT_TOKEN=${DISCORD_BOT_TOKEN}
         volumes:
