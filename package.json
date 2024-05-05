@@ -1,6 +1,6 @@
 {
     "name": "3d-print-info",
-    "version": "1.1.1",
+    "version": "1.1.2",
     "description": "A bot that helps you store information about 3d printing",
     "main": "dist/index.js",
     "engines": {
