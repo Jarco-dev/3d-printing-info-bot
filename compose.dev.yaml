@@ -1,0 +1,56 @@
+services:
+    bot:
+        build:
+            target: development
+        restart: unless-stopped
+        environment:
+            DATABASE_URL: mysql://prisma:password@mariadb:3306/discord-bot
+            SHADOW_DATABASE_URL: mysql://prisma:password@mariadb-shadow:3306/shadow
+            LOG_LEVEL: DEBUG
+            METRICS_PORT: 9000
+            DISCORD_BOT_TOKEN: ${DISCORD_BOT_TOKEN}
+        volumes:
+            - "./prisma:/usr/src/app/prisma"
+            - "./scripts:/usr/src/app/scripts"
+            - "./src:/usr/src/app/src"
+            - "./storage:/usr/src/app/storage"
+            - "./tsconfig.json:/usr/src/app/tsconfig.json"
+        depends_on:
+            - mariadb
+            - mariadb-shadow
+        networks:
+            - backend
+
+    mariadb:
+        image: mariadb
+        restart: unless-stopped
+        environment:
+            MYSQL_RANDOM_ROOT_PASSWORD: yes
+            MYSQL_USER: prisma
+            MYSQL_PASSWORD: password
+            MYSQL_DATABASE: discord-bot
+        volumes:
+            - "dev_mariadb_data:/var/lib/mysql"
+        networks:
+            - backend
+
+    mariadb-shadow:
+        image: mariadb
+        restart: unless-stopped
+        environment:
+            MYSQL_RANDOM_ROOT_PASSWORD: yes
+            MYSQL_USER: prisma
+            MYSQL_PASSWORD: password
+            MYSQL_DATABASE: shadow
+        volumes:
+            - "dev_mariadb_shadow_data:/var/lib/mysql"
+        networks:
+            - backend
+
+volumes:
+    dev_redis_data:
+    dev_mariadb_data:
+    dev_mariadb_shadow_data:
+
+networks:
+    backend:
