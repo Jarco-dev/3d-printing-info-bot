@@ -266,7 +266,9 @@ export default class PurgeVolumeChatInputCommand extends ChatInputCommand {
         if (name.length > 100) {
             const embed = new EmbedBuilder()
                 .setColor(this.client.config.MSG_TYPES.INVALID.COLOR)
-                .setTitle("This purge volume name is too long, add a custom one");
+                .setTitle(
+                    "This purge volume name is too long, add a custom one"
+                );
             this.client.sender.reply(i, { embeds: [embed] });
 
             return { result: "INVALID_ARGUMENTS" };
