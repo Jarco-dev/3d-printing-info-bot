@@ -5,7 +5,6 @@ import gcStats from "@sematext/gc-stats";
 import express from "express";
 import PromClient from "prom-client";
 
-
 class MetricsManager {
     public port: number;
     public metrics: { [key: string]: any };
@@ -36,7 +35,7 @@ class MetricsManager {
                 this.memoryUsage = process.memoryUsage();
                 res.set("Content-Type", this.promClient.register.contentType);
                 res.end(await this.promClient.register.metrics());
-            } catch(err) {
+            } catch (err) {
                 this.logger.error("Error while handling metrics request", err);
                 res.status(500).end();
             }
@@ -45,7 +44,9 @@ class MetricsManager {
 
     public start(): void {
         this.app.listen(this.port, (): void => {
-            this.logger.verbose(`Prometheus metrics exposed on port ${this.port}`);
+            this.logger.verbose(
+                `Prometheus metrics exposed on port ${this.port}`
+            );
         });
     }
 
@@ -56,7 +57,11 @@ class MetricsManager {
             help: "Total user and system CPU time spent in seconds",
             collect: () => {
                 const cpuUsage = process.cpuUsage();
-                const cpuSeconds = ((cpuUsage.system + cpuUsage.user) - (this.lastCpuUsage.user + this.lastCpuUsage.system)) / 1e6;
+                const cpuSeconds =
+                    (cpuUsage.system +
+                        cpuUsage.user -
+                        (this.lastCpuUsage.user + this.lastCpuUsage.system)) /
+                    1e6;
                 this.lastCpuUsage = cpuUsage;
                 this.metrics.processCpuSeconds.inc(cpuSeconds);
             }
@@ -122,7 +127,7 @@ class MetricsManager {
         });
 
         this.metrics.gcReclaimedCount = new this.promClient.Counter({
-            name: `nodejs_gc_reclaimed_bytes_total`,
+            name: "nodejs_gc_reclaimed_bytes_total",
             help: "Total number of bytes reclaimed by GC.",
             labelNames: ["gcType"]
         });
@@ -173,11 +178,32 @@ class MetricsManager {
             help: "The Discord.Client's cache sizes",
             labelNames: ["type"],
             collect: () => {
-                this.metrics.clientCacheSize.labels("users").set(this.client.users.cache.size ?? 0);
-                this.metrics.clientCacheSize.labels("channels").set(this.client.channels.cache.size ?? 0);
-                this.metrics.clientCacheSize.labels("guilds").set(this.client.guilds.cache.size ?? 0);
-                this.metrics.clientCacheSize.labels("members").set(this.client.guilds.cache.reduce((a, g) => g.members.cache.size, 0));
-                this.metrics.clientCacheSize.labels("messages").set(this.client.channels.cache.reduce((a, c) => ("messages" in c) ? c.messages.cache.size : 0, 0));
+                this.metrics.clientCacheSize
+                    .labels("users")
+                    .set(this.client.users.cache.size ?? 0);
+                this.metrics.clientCacheSize
+                    .labels("channels")
+                    .set(this.client.channels.cache.size ?? 0);
+                this.metrics.clientCacheSize
+                    .labels("guilds")
+                    .set(this.client.guilds.cache.size ?? 0);
+                this.metrics.clientCacheSize
+                    .labels("members")
+                    .set(
+                        this.client.guilds.cache.reduce(
+                            (a, g) => g.members.cache.size,
+                            0
+                        )
+                    );
+                this.metrics.clientCacheSize
+                    .labels("messages")
+                    .set(
+                        this.client.channels.cache.reduce(
+                            (a, c) =>
+                                "messages" in c ? c.messages.cache.size : 0,
+                            0
+                        )
+                    );
             }
         });
     }
@@ -196,20 +222,25 @@ class MetricsManager {
             this.metrics.gcCount.labels(gcType).inc();
             this.metrics.gcTimeCount.labels(gcType).inc(stats.pause / 1e9);
             if (stats.diff.usedHeapSize < 0) {
-                this.metrics.gcReclaimedCount.labels(gcType).inc(stats.diff.usedHeapSize * -1);
+                this.metrics.gcReclaimedCount
+                    .labels(gcType)
+                    .inc(stats.diff.usedHeapSize * -1);
             }
         });
 
         // Websocket events
-        this.client.on("raw", (p) => {
+        this.client.on("raw", p => {
             this.metrics.websocketEvents.labels(p.t ?? "UNKNOWN").inc();
         });
 
         // Commands, buttons and menus executed total
-        this.client.on("interactionCreate", (i) => {
-            if (i.isCommand()) this.metrics.commandsExecuted.labels(i.commandName).inc();
-            else if (i.isButton()) this.metrics.buttonsExecuted.labels(i.customId).inc();
-            else if (i.isStringSelectMenu()) this.metrics.menusExecuted.labels(i.customId).inc();
+        this.client.on("interactionCreate", i => {
+            if (i.isCommand())
+                this.metrics.commandsExecuted.labels(i.commandName).inc();
+            else if (i.isButton())
+                this.metrics.buttonsExecuted.labels(i.customId).inc();
+            else if (i.isStringSelectMenu())
+                this.metrics.menusExecuted.labels(i.customId).inc();
         });
     }
 }

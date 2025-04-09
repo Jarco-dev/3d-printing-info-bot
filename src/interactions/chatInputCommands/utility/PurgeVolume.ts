@@ -259,10 +259,22 @@ export default class PurgeVolumeChatInputCommand extends ChatInputCommand {
             };
         }
 
-        // Create purge volume
+        // Validate name length
         name = name
             ? name
             : `${nozzle.name} | ${fromFilament.name} ➡ ${toFilament.name}`;
+        if (name.length > 100) {
+            const embed = new EmbedBuilder()
+                .setColor(this.client.config.MSG_TYPES.INVALID.COLOR)
+                .setTitle(
+                    "This purge volume name is too long, add a custom one"
+                );
+            this.client.sender.reply(i, { embeds: [embed] });
+
+            return { result: "INVALID_ARGUMENTS" };
+        }
+
+        // Create purge volume
         await this.client.prisma.filamentPurgeVolumes.create({
             data: {
                 fromFilamentId: fromFilamentId,
@@ -500,7 +512,9 @@ export default class PurgeVolumeChatInputCommand extends ChatInputCommand {
         );
 
         // Check for duplicates
-        const ids = [filament1Id, filament2Id, filament3Id, filament4Id].filter(i => !isNaN(i));
+        const ids = [filament1Id, filament2Id, filament3Id, filament4Id].filter(
+            i => !isNaN(i)
+        );
         const duplicates = ids.filter(
             (item, index) => ids.indexOf(item) !== index
         );
