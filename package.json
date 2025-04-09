@@ -12,8 +12,8 @@
         "build": "gts clean && tsc --project tsconfig.json && tsc-alias",
         "start": "node dist/index.js",
         "dev": "nodemon --watch \"src/**\" --ext \"ts\" --exec \"ts-node -r tsconfig-paths/register ./src/index.ts\"",
-        "dev:enter:bot": "docker exec -it 3d-printing-info-bot-1 bash",
-        "dev:enter:mariadb": "docker exec -it 3d-printing-info-mariadb-1 mariadb --user=prisma --password=password discord-bot",
+        "dev:enter:bot": "docker exec -it 3d-printing-info-bot-bot-1 bash",
+        "dev:enter:mariadb": "docker exec -it 3d-printing-info-bot-mariadb-1 mariadb --user=prisma --password=password discord-bot",
         "new:task": "ts-node scripts/task.ts",
         "new:event": "ts-node scripts/event.ts",
         "new:interaction": "ts-node scripts/interaction.ts"
