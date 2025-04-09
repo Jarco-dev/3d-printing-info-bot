@@ -500,7 +500,9 @@ export default class PurgeVolumeChatInputCommand extends ChatInputCommand {
         );
 
         // Check for duplicates
-        const ids = [filament1Id, filament2Id, filament3Id, filament4Id].filter(i => !isNaN(i));
+        const ids = [filament1Id, filament2Id, filament3Id, filament4Id].filter(
+            i => !isNaN(i)
+        );
         const duplicates = ids.filter(
             (item, index) => ids.indexOf(item) !== index
         );
